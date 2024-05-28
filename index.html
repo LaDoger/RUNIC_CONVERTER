@@ -76,27 +76,32 @@
         function convertToRunic(text) {
             let runicText = '';
             let lastCharWasBullet = false;
-            for (let char of text) {
-                const normalizedChar = char.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                if (/[a-zA-Z]/.test(normalizedChar)) {
-                    runicText += normalizedChar.toUpperCase();
-                    lastCharWasBullet = false;
-                } else if (char === '\n') {
-                    runicText += '\n';
-                    lastCharWasBullet = false;
-                } else if (char === '•') {
-                    if (!lastCharWasBullet) {
-                        runicText += '•';
-                        lastCharWasBullet = true;
-                    }
-                } else {
-                    if (!lastCharWasBullet) {
-                        runicText += '•';
-                        lastCharWasBullet = true;
+            const lines = text.split('\n');
+            for (let line of lines) {
+                let processedLine = '';
+                for (let char of line) {
+                    const normalizedChar = char.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    if (/[a-zA-Z]/.test(normalizedChar)) {
+                        processedLine += normalizedChar.toUpperCase();
+                        lastCharWasBullet = false;
+                    } else if (char === '•') {
+                        if (!lastCharWasBullet) {
+                            processedLine += '•';
+                            lastCharWasBullet = true;
+                        }
+                    } else {
+                        if (!lastCharWasBullet) {
+                            processedLine += '•';
+                            lastCharWasBullet = true;
+                        }
                     }
                 }
+                if (processedLine.endsWith('•')) {
+                    processedLine = processedLine.slice(0, -1);
+                }
+                runicText += processedLine + '\n';
             }
-            return runicText;
+            return runicText.trim();
         }
 
         document.getElementById('inputText').addEventListener('input', function() {

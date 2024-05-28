@@ -85,12 +85,12 @@
                         processedLine += normalizedChar.toUpperCase();
                         lastCharWasBullet = false;
                     } else if (char === '•') {
-                        if (!lastCharWasBullet) {
+                        if (!lastCharWasBullet && processedLine.length > 0) {
                             processedLine += '•';
                             lastCharWasBullet = true;
                         }
                     } else {
-                        if (!lastCharWasBullet) {
+                        if (!lastCharWasBullet && processedLine.length > 0) {
                             processedLine += '•';
                             lastCharWasBullet = true;
                         }
